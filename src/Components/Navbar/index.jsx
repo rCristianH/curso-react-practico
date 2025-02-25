@@ -72,14 +72,16 @@ const Navbar = () => {
         {context.isAuthenticated && (
           <li className="text-black/60">{context.user?.email}</li>
         )}
-        <li>
-          <NavLink
-            to="/my-orders"
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
-          >
-            My Orders
-          </NavLink>
-        </li>
+        {context.isAuthenticated && (
+          <li>
+            <NavLink
+              to="/my-orders"
+              className={({ isActive }) => (isActive ? activeStyle : undefined)}
+            >
+              My Orders
+            </NavLink>
+          </li>
+        )}
         {!context.isAuthenticated && (
           <li>
             <NavLink

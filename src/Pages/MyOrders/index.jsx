@@ -1,11 +1,18 @@
 import { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Layout from '../../Components/Layout'
 import { ShoppingCartContext } from '../../Context'
 import OrdersCard from '../../Components/OrdersCard'
 
 function MyOrders() {
   const context = useContext(ShoppingCartContext)
+  const navigate = useNavigate()
+
+  // Redirigir si no está autenticado
+  if (!context.isAuthenticated) {
+    navigate('/sign-in')
+    return null
+  }
 
   return (
     <Layout>
