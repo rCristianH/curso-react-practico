@@ -104,9 +104,12 @@ const Navbar = () => {
           </li>
         )}
 
-        <li className="flex items-center">
+        <li 
+          className="flex items-center cursor-pointer hover:text-gray-500 transition-colors"
+          onClick={() => context.isCheckoutSideMenuOpen ? context.closeCheckoutSideMenu() : context.openCheckoutSideMenu()}
+        >
           <ShoppingBagIcon className="h-6 w-6 text-black"></ShoppingBagIcon>
-          <div>{context.cartProducts.length}</div>
+          <div className="font-medium">{context.cartProducts.length}</div>
         </li>
       </ul>
     </nav>
