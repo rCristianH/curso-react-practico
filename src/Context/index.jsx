@@ -10,15 +10,55 @@ export const ShoppingCartProvider = ({children}) => {
   const [user, setUser] = useState(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
+  // Función para guardar usuario con expiración
+  const saveUserToLocalStorage = (userData) => {
+    const expirationDate = new Date()
+    expirationDate.setDate(expirationDate.getDate() + 4) // 4 días desde ahora
+    
+    const userDataWithExpiration = {
+      user: userData,
+      expiration: expirationDate.toISOString()
+    }
+    
+    localStorage.setItem('userData', JSON.stringify(userDataWithExpiration))
+  }
+
+  // Función para recuperar usuario del localStorage
+  const getUserFromLocalStorage = () => {
+    const userData = localStorage.getItem('userData')
+    if (!userData) return null
+
+    const { user, expiration } = JSON.parse(userData)
+    const now = new Date()
+    const expirationDate = new Date(expiration)
+
+    if (now > expirationDate) {
+      localStorage.removeItem('userData')
+      return null
+    }
+
+    return user
+  }
+
+  // Efecto para recuperar usuario al iniciar
+  useEffect(() => {
+    const savedUser = getUserFromLocalStorage()
+    if (savedUser) {
+      setUser(savedUser)
+      setIsAuthenticated(true)
+    }
+  }, [])
+
   const signIn = (email, password) => {
-    // Aquí podrías agregar la lógica de validación
     if (email && password) {
-      setUser({ 
+      const userData = { 
         email,
         name: '',
         address: ''
-      })
+      }
+      setUser(userData)
       setIsAuthenticated(true)
+      saveUserToLocalStorage(userData)
       return true
     }
     return false
@@ -27,6 +67,7 @@ export const ShoppingCartProvider = ({children}) => {
   const signOut = () => {
     setUser(null)
     setIsAuthenticated(false)
+    localStorage.removeItem('userData')
   }
 
   // Product Detail · Open/Close
