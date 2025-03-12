@@ -6,6 +6,29 @@ export const ShoppingCartProvider = ({children}) => {
   // Shopping Cart · Increment quantity
   const [count, setCount] = useState(0)
 
+  // User Authentication
+  const [user, setUser] = useState(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+  const signIn = (email, password) => {
+    // Aquí podrías agregar la lógica de validación
+    if (email && password) {
+      setUser({ 
+        email,
+        name: '',
+        address: ''
+      })
+      setIsAuthenticated(true)
+      return true
+    }
+    return false
+  }
+
+  const signOut = () => {
+    setUser(null)
+    setIsAuthenticated(false)
+  }
+
   // Product Detail · Open/Close
   const [isProductDetailOpen, setIsProductDetailOpen] = useState(false)
   const openProductDetail = () => setIsProductDetailOpen(true)
@@ -96,7 +119,12 @@ export const ShoppingCartProvider = ({children}) => {
       setSearchByTitle,
       filteredItems,
       searchByCategory,
-      setSearchByCategory
+      setSearchByCategory,
+      user,
+      setUser,
+      isAuthenticated,
+      signIn,
+      signOut
     }}>
       {children}
     </ShoppingCartContext.Provider>
