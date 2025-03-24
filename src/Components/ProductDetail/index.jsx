@@ -1,10 +1,17 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { ShoppingCartContext } from '../../Context'
 import './styles.css'
 
 const ProductDetail = () => {
   const context = useContext(ShoppingCartContext)
+
+  // Cerrar CheckoutSideMenu cuando se abre ProductDetail
+  useEffect(() => {
+    if (context.isProductDetailOpen) {
+      context.closeCheckoutSideMenu()
+    }
+  }, [context.isProductDetailOpen])
 
   return (
     <aside
